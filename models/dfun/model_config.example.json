@@ -1,0 +1,12 @@
+{
+  "model_name": "DFUN",
+  "version": "pending",
+  "checkpoint": "checkpoint.pt",
+  "class_count": 230,
+  "class_map_file": "classes.json",
+  "mc_dropout_passes": 50,
+  "input_length": null,
+  "normalization": null,
+  "adapter_status": "waiting_for_checkpoint_and_model_code"
+}
+

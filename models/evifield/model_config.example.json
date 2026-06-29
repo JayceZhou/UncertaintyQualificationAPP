@@ -1,0 +1,11 @@
+{
+  "model_name": "EviField",
+  "version": "pending",
+  "checkpoint": "checkpoint.pt",
+  "input_channels": null,
+  "output_order": ["mean_1", "mean_2", "kappa", "nu", "l11", "l21", "l22"],
+  "nu_minimum": 3.0,
+  "normalization": null,
+  "adapter_status": "waiting_for_checkpoint_and_model_code"
+}
+
