@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: sciuq-studio
+Version: 1.0.0
+Summary: 科学预测不确定性量化与风险评估系统
+Requires-Python: >=3.10
+Requires-Dist: numpy>=1.24
+Requires-Dist: pandas>=2.0
+Requires-Dist: plotly>=5.18
+Requires-Dist: streamlit>=1.32
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
