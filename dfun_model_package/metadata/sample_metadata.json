@@ -1,0 +1,13 @@
+{
+  "sample_file": "samples/opxrd_public_sample.npz",
+  "source_dataset": "revision_outputs/configs/opxrd_legacy_augmented_seed42.npz",
+  "source_index": 334,
+  "is_augmented": false,
+  "label_index": 147,
+  "space_group": 148,
+  "intensity_shape": [
+    5000
+  ],
+  "intensity_min": 0.0,
+  "intensity_max": 100.0
+}

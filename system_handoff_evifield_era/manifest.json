@@ -1,0 +1,53 @@
+{
+  "package": "system_handoff_evifield_era",
+  "task": "optical_flow",
+  "model_name": "EviField-ERA optical-flow NIW",
+  "checkpoint": {
+    "path": "checkpoints/evifield_era_optical_flow_latest_S_Mix.pt",
+    "sha256": "289d1a37cfc13225f6dc892986775e66db3c6ae520897641e6f9e71b5c615a5f",
+    "size_bytes": 148082056
+  },
+  "runtime": {
+    "evidential_mode": "niw",
+    "flow_support_aggregation": "warp",
+    "iters_per_scale": 4,
+    "niw_r": 1.0,
+    "niw_eps": 1e-6,
+    "niw_nu_min": 3.1,
+    "niw_nu_max": null,
+    "use_risk_projector": false,
+    "risk_readout": "analytic_evidence_score"
+  },
+  "input": {
+    "num_images": 2,
+    "image_order": ["frame1_reference", "frame2_support"],
+    "tensor_shape": "[B, 3, H, W]",
+    "channel_order": "RGB",
+    "normalization": "0..255 or 0..1 -> [-1, 1]",
+    "formal_training_crop_hw": [416, 960]
+  },
+  "output": {
+    "pred_field": "[B, 2, H, W], channels=[u_dx, v_dy]",
+    "raw_niw": "[B, 6, H, W], channels=[mu_x, mu_y, kappa_raw, l11_raw, l21_raw, l22_raw]",
+    "C_total": "[B, H, W, 2, 2]",
+    "risk_score": "[B, 1, H, W]"
+  },
+  "test_sample": {
+    "frame1": "test_sample/frame1.png",
+    "frame2": "test_sample/frame2.png",
+    "expected_output": "expected_output/test_sample_evifield_era_outputs.npz",
+    "expected_output_sha256": "812e638eada3c32927e3007a28addd15777e9cc584939375d26e50d296e093a3",
+    "summary": {
+      "pred_field_shape": [1, 2, 64, 96],
+      "raw_niw_shape": [1, 6, 64, 96],
+      "C_total_shape": [1, 64, 96, 2, 2],
+      "risk_score_shape": [1, 1, 64, 96],
+      "pred_field_mean": 1.3582022190093994,
+      "pred_field_std": 0.8379982113838196,
+      "kappa_mean": 3.6256673336029053,
+      "nu_mean": 3.6256673336029053,
+      "U_total_mean": 1390.077880859375,
+      "risk_score_mean": -2.0010972023010254
+    }
+  }
+}

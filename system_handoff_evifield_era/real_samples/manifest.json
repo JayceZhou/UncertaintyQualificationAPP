@@ -1,0 +1,46 @@
+{
+  "optical_flow": {
+    "dataset": "Sintel",
+    "sample_id": "clean:shaman_3:000000",
+    "checkpoint": "checkpoints/evifield_era_optical_flow_latest_S_Mix.pt",
+    "raw_files": [
+      "real_samples/optical_flow/raw/frame_0001.png",
+      "real_samples/optical_flow/raw/frame_0002.png",
+      "real_samples/optical_flow/raw/frame_0001.flo"
+    ],
+    "preprocessed": {
+      "model_input": "real_samples/optical_flow/preprocessed/model_input.pt",
+      "target_valid_pt": "real_samples/optical_flow/preprocessed/target_valid.pt",
+      "target_valid_npz": "real_samples/optical_flow/preprocessed/target_valid.npz",
+      "meta": "real_samples/optical_flow/preprocessed/sample_meta.json"
+    },
+    "expected_output": "real_samples/optical_flow/expected_output/real_sintel_shaman3_outputs.npz",
+    "expected_output_sha256": "a25ff9f1c968dd3fc6b9db800605cb17bb3f6cd4026c54822c39cbfc25111c85",
+    "sample_epe": 0.47585731744766235,
+    "sample_mae": 0.2968619465827942,
+    "valid_pixels": 399360
+  },
+  "ltem": {
+    "dataset": "LTEMData",
+    "sample_id": "58125111111",
+    "checkpoint": "checkpoints/evifield_era_ltem_latest_FT.pt",
+    "checkpoint_sha256": "c3b86baef7a1f58279e10e1b56062a209944b241b57f8c736d86c671589de424",
+    "raw_files": [
+      "real_samples/ltem/raw/U_58125111111.png",
+      "real_samples/ltem/raw/I_58125111111.png",
+      "real_samples/ltem/raw/O_58125111111.png",
+      "real_samples/ltem/raw/color_58125111111.jpg"
+    ],
+    "preprocessed": {
+      "model_input": "real_samples/ltem/preprocessed/model_input.pt",
+      "target_valid_pt": "real_samples/ltem/preprocessed/target_valid.pt",
+      "target_valid_npz": "real_samples/ltem/preprocessed/target_valid.npz",
+      "meta": "real_samples/ltem/preprocessed/sample_meta.json"
+    },
+    "expected_output": "real_samples/ltem/expected_output/real_ltem_58125111111_outputs.npz",
+    "expected_output_sha256": "459c9df094c97bf2cb4d6f27d3e6329552362c507b28872d0ca7f444ebfec7eb",
+    "sample_epe": 0.504057765007019,
+    "sample_mae": 0.3226417005062103,
+    "valid_pixels": 21285
+  }
+}

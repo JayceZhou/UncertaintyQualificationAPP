@@ -3,9 +3,9 @@
 本软件将 DFUN 论文中的 Monte Carlo Dropout 分类不确定性分析，与 EviField
 论文中的二维 NIW 证据协方差分析集成为一个轻量级网页工具。
 
-V1.0 当前支持“结果分析模式”：用户上传模型输出，系统计算不确定性指标、
-0-100 风险分数、风险等级和风险覆盖曲线。预训练模型推理接口已在
-`inference/adapters.py` 中预留，参数文件约定见 `models/README.md`。
+V1.0 支持“模型直接推理”和“结果分析”两种模式：DFUN 从衍射曲线执行
+MC Dropout 空间群分类，EviField 从双帧 RGB 图像预测二维光流与 NIW 证据；
+系统继续支持导入已有结果并计算不确定性、0-100 风险分数和风险覆盖曲线。
 
 系统采用 Streamlit 网页界面和 SQLite 本地数据库，适合单机或单节点服务器部署。
 密码只保存 scrypt 加盐哈希。首个注册账户自动成为管理员，后续账户默认为分析用户。
@@ -19,7 +19,7 @@ V1.0 当前支持“结果分析模式”：用户上传模型输出，系统计
 - 分类与矢量场统一风险评分、高风险筛选和 CSV 导出；
 - 用户注册、登录、退出和密码修改；
 - 管理员用户状态管理、项目空间和操作审计日志；
-- DFUN 与 EviField 预训练参数接入占位。
+- DFUN 与 EviField 论文模型直接推理、测试样本和参数状态检查。
 
 ## 启动
 
@@ -28,6 +28,12 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e .
 streamlit run app.py
+```
+
+如需在网页内直接运行两个论文模型，请安装模型依赖：
+
+```bash
+pip install -e '.[models]'
 ```
 
 浏览器访问 Streamlit 输出的本地地址。两个分析页面均提供内置演示数据。

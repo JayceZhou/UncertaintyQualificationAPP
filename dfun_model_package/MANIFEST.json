@@ -1,0 +1,19 @@
+{
+  "package_name": "dfun_model_package",
+  "created_for": "DFUN model system integration",
+  "selected_checkpoint": "checkpoints/dfun_gate_fls_exp_test4_model.pth",
+  "files": {
+    "model_code": "dfun/dfun_model.py",
+    "preprocessing_code": "dfun/preprocess.py",
+    "minimal_inference": "dfun/infer.py",
+    "training_loss_reference": "dfun/focal_loss_label_smoothing.py",
+    "checkpoint": "checkpoints/dfun_gate_fls_exp_test4_model.pth",
+    "class_mapping_csv": "mappings/space_group_mapping.csv",
+    "class_mapping_json": "mappings/space_group_mapping.json",
+    "test_sample": "samples/opxrd_public_sample.npz",
+    "expected_output": "samples/expected_output.json",
+    "sample_metadata": "metadata/sample_metadata.json",
+    "model_card": "metadata/model_card.json",
+    "requirements": "requirements.txt"
+  }
+}

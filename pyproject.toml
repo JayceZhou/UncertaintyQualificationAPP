@@ -16,6 +16,11 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+models = [
+  "torch>=2.1",
+  "scipy>=1.10",
+  "Pillow>=10",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

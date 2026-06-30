@@ -12,7 +12,8 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from appcore import AppStore, User
-from ui import inject_theme, page_header, section_label
+from inference import DFUNAdapter, EviFieldAdapter, ModelUnavailableError, model_registry
+from ui import empty_state, inject_theme, page_header, section_label, workflow_steps
 from uqcore import analyze_mc_probabilities, analyze_niw_field
 
 
@@ -30,6 +31,20 @@ RISK_COLORS = {
 @st.cache_resource
 def get_store(path: str) -> AppStore:
     return AppStore(path)
+
+
+@st.cache_resource(show_spinner=False)
+def get_dfun_adapter(device: str) -> DFUNAdapter:
+    adapter = DFUNAdapter(device=device)
+    adapter.load()
+    return adapter
+
+
+@st.cache_resource(show_spinner=False)
+def get_evifield_adapter(device: str) -> EviFieldAdapter:
+    adapter = EviFieldAdapter(device=device)
+    adapter.load()
+    return adapter
 
 
 def sample_classification() -> pd.DataFrame:
@@ -195,10 +210,21 @@ def sidebar(user: User, store: AppStore) -> str:
         f'<div class="user-card__meta"><span class="status-dot"></span>{html.escape(role_name)} · @{html.escape(user.username)}</div></div>',
         unsafe_allow_html=True,
     )
+    labels = {
+        "系统总览": "⌂  系统总览",
+        "项目空间": "▦  项目空间",
+        "分类不确定性": "◫  分类不确定性",
+        "矢量场不确定性": "⌁  矢量场不确定性",
+        "高风险筛选": "◇  高风险筛选",
+        "模型管理": "⬡  模型管理",
+        "账户设置": "◉  账户设置",
+        "用户管理": "♙  用户管理",
+        "操作日志": "≡  操作日志",
+    }
     pages = ["系统总览", "项目空间", "分类不确定性", "矢量场不确定性", "高风险筛选", "模型管理", "账户设置"]
     if user.role == "admin":
         pages.extend(["用户管理", "操作日志"])
-    selected = st.sidebar.radio("工作区导航", pages, label_visibility="collapsed")
+    selected = st.sidebar.radio("工作区导航", pages, format_func=labels.get, label_visibility="collapsed")
     st.sidebar.divider()
     if st.sidebar.button("退出登录", width="stretch"):
         store.log(user.id, "logout", "session", str(user.id))
@@ -211,6 +237,7 @@ def sidebar(user: User, store: AppStore) -> str:
 
 def home_page(user: User, store: AppStore) -> None:
     stats = store.dashboard_stats(user)
+    installed_models = sum(Path(spec["checkpoint"]).is_file() for spec in model_registry())
     st.markdown(
         f"""
         <div class="hero">
@@ -227,7 +254,7 @@ def home_page(user: User, store: AppStore) -> None:
             ("分析项目", stats["projects"], "管理员可查看系统全部项目"),
             ("有效用户", stats["active_users"], None),
             ("我的操作记录", stats["operations"], None),
-            ("已接入模型", 0, "模型参数上传后自动更新"),
+            ("已接入模型", installed_models, "可在分类与矢量场页面直接推理"),
         ]
     )
     section_label("核心分析能力")
@@ -265,7 +292,19 @@ def home_page(user: User, store: AppStore) -> None:
 
 
 def project_page(user: User, store: AppStore) -> None:
-    page_header("PROJECT WORKSPACE", "项目空间", "为每次不确定性分析建立独立项目，保留任务类型、项目编号和用途说明。")
+    page_header("PROJECT WORKSPACE", "项目空间", "为每次不确定性分析建立独立项目，保留任务类型、项目编号和用途说明。", "▦", "项目数据已同步")
+    projects = store.list_projects(user)
+    classification_count = sum(project.task_type == "classification" for project in projects)
+    vector_count = sum(project.task_type == "vector_field" for project in projects)
+    metric_row(
+        [
+            ("全部项目", len(projects), None),
+            ("分类任务", classification_count, None),
+            ("矢量场任务", vector_count, None),
+            ("已完成", sum(project.status == "completed" for project in projects), None),
+        ]
+    )
+    workflow_steps(["创建项目", "导入结果", "执行分析", "复核导出"], active=1 if not projects else 2)
     with st.expander("新建分析项目", expanded=not bool(store.list_projects(user))):
         with st.form("create_project_form"):
             left, right = st.columns(2)
@@ -289,11 +328,25 @@ def project_page(user: User, store: AppStore) -> None:
                 st.success("项目已创建")
                 st.rerun()
 
-    projects = store.list_projects(user)
     section_label(f"项目列表 · {len(projects)}")
     if not projects:
-        st.info("暂无项目记录。")
+        empty_state("还没有分析项目", "创建项目后，可按任务组织数据、分析结果和复核流程。", "▦")
         return
+    for row_start in range(0, len(projects), 2):
+        columns = st.columns(2, gap="medium")
+        for column, project in zip(columns, projects[row_start : row_start + 2]):
+            task_name = "分类不确定性" if project.task_type == "classification" else "二维矢量场"
+            description = project.description or "尚未填写项目说明"
+            status = "已完成" if project.status == "completed" else "分析准备中"
+            column.markdown(
+                f'<div class="project-card"><div class="project-card__top">'
+                f'<div class="project-card__code">{html.escape(project.code)}</div>'
+                f'<div class="project-card__status">{status}</div></div>'
+                f'<div class="project-card__title">{html.escape(project.name)}</div>'
+                f'<div class="project-card__copy">{html.escape(description)}</div>'
+                f'<div class="project-card__meta">{html.escape(task_name)} · {html.escape(project.created_at)}</div></div>',
+                unsafe_allow_html=True,
+            )
     frame = pd.DataFrame(
         [
             {
@@ -308,7 +361,8 @@ def project_page(user: User, store: AppStore) -> None:
             for project in projects
         ]
     )
-    st.dataframe(frame, width="stretch", hide_index=True)
+    with st.expander("查看项目数据表"):
+        st.dataframe(frame, width="stretch", hide_index=True)
     with st.expander("删除项目"):
         project_map = {project.id: f"{project.code} · {project.name}" for project in projects}
         project_id = st.selectbox("选择项目", list(project_map), format_func=project_map.get)
@@ -324,25 +378,84 @@ def project_page(user: User, store: AppStore) -> None:
 
 
 def classification_page(user: User, store: AppStore) -> None:
-    page_header("DFUN · MONTE CARLO DROPOUT", "分类不确定性分析", "读取多次随机前向概率，计算预测熵、互信息、概率方差、Top-k 和风险覆盖关系。")
-    with st.container(border=True):
-        uploaded = st.file_uploader("上传长表 CSV", type=["csv"], key="classification_file")
-        left, right = st.columns([1, 3])
-        use_sample = left.button("载入演示数据", width="stretch")
-        right.info("必要列：sample_id、pass_id、class_label、probability；true_label 可选。")
-
+    page_header("DFUN · MONTE CARLO DROPOUT", "分类不确定性分析", "直接运行DFUN空间群模型或读取多次随机前向概率，计算预测熵、互信息和风险覆盖关系。", "◫", "DFUN推理与分析引擎就绪")
+    workflow_steps(
+        ["选择输入方式", "执行推理或导入", "计算不确定性", "筛选与导出"],
+        active=4 if st.session_state.get("classification_result") is not None else 1,
+    )
+    st.markdown(
+        '<div class="summary-band"><div><div class="summary-band__title">DFUN 推理与结果分析</div>'
+        '<div class="summary-band__copy">可直接运行空间群分类模型，也可导入已有的多次随机前向概率。</div></div>'
+        '<div class="summary-band__badge">MODEL + CSV</div></div>',
+        unsafe_allow_html=True,
+    )
+    input_mode = st.radio(
+        "输入方式",
+        ["DFUN模型直接推理", "导入概率结果"],
+        horizontal=True,
+        key="classification_input_mode",
+    )
     data = None
-    if uploaded is not None:
-        data = pd.read_csv(uploaded)
-    elif use_sample:
-        st.session_state.classification_input = sample_classification()
+    if input_mode == "DFUN模型直接推理":
+        with st.container(border=True):
+            model_file = st.file_uploader(
+                "上传衍射曲线 NPZ",
+                type=["npz"],
+                key="dfun_model_file",
+                help="文件需包含 intensity 或 features；非5000点曲线还需包含 d_spacing。",
+            )
+            controls = st.columns([1.2, 1, 1])
+            mc_passes = controls[0].slider("MC Dropout次数", 5, 100, 30, 5)
+            sample_index = controls[1].number_input("样本序号", min_value=0, value=0, step=1)
+            device = controls[2].selectbox("计算设备", ["auto", "cpu"], format_func={"auto": "自动选择", "cpu": "CPU"}.get)
+            use_public_sample = st.button("使用内置公开XRD样本", width="stretch")
+            if use_public_sample:
+                st.session_state.dfun_public_sample = True
+            source = model_file
+            if source is None and st.session_state.get("dfun_public_sample"):
+                source = ROOT / "dfun_model_package" / "samples" / "opxrd_public_sample.npz"
+                st.caption("当前输入：DFUN模型包内置公开样本 opxrd_public_sample.npz")
+            run_model = st.button("运行DFUN模型并分析", type="primary", width="stretch")
+        if run_model:
+            if source is None:
+                st.error("请上传NPZ文件或选择内置公开样本")
+            else:
+                try:
+                    with st.spinner("正在加载DFUN权重并执行MC Dropout推理……"):
+                        adapter = get_dfun_adapter(device)
+                        data = adapter.predict(source, mc_passes=int(mc_passes), sample_index=int(sample_index))
+                        st.session_state.classification_input = data
+                        st.session_state.classification_result = analyze_mc_probabilities(data)
+                except (ValueError, RuntimeError, ModelUnavailableError) as error:
+                    st.error(str(error))
+                else:
+                    store.log(
+                        user.id,
+                        "run_model_inference",
+                        "dfun",
+                        details={"rows": len(data), "mc_passes": int(mc_passes), "device": adapter.device},
+                    )
+                    st.success(f"DFUN推理完成，实际设备：{adapter.device}，已生成 {len(data):,} 条概率记录。")
+    else:
+        with st.container(border=True):
+            uploaded = st.file_uploader("上传长表 CSV", type=["csv"], key="classification_file")
+            left, right = st.columns([1, 3])
+            use_sample = left.button("载入演示数据", width="stretch")
+            right.info("必要列：sample_id、pass_id、class_label、probability；true_label 可选。")
+        if uploaded is not None:
+            data = pd.read_csv(uploaded)
+        elif use_sample:
+            st.session_state.classification_input = sample_classification()
     data = data if data is not None else st.session_state.get("classification_input")
     if data is None:
-        st.info("上传推理结果或载入演示数据后开始分析。")
+        if input_mode == "DFUN模型直接推理":
+            empty_state("等待衍射曲线", "上传NPZ或选择内置公开样本，然后运行DFUN模型生成MC Dropout概率。", "◫")
+        else:
+            empty_state("等待分类概率数据", "上传CSV或载入演示数据，系统将自动检查字段与采样完整性。", "◫")
         return
     with st.expander("输入数据预览"):
         st.dataframe(data.head(100), width="stretch")
-    if st.button("执行分类分析", type="primary", width="stretch"):
+    if input_mode == "导入概率结果" and st.button("执行分类分析", type="primary", width="stretch"):
         try:
             st.session_state.classification_result = analyze_mc_probabilities(data)
         except ValueError as error:
@@ -367,56 +480,123 @@ def classification_page(user: User, store: AppStore) -> None:
     )
     chart_left, chart_right = st.columns(2)
     with chart_left:
-        figure = px.histogram(
-            result.samples,
-            x="risk_score",
-            color="risk_level",
-            color_discrete_map=RISK_COLORS,
-            category_orders={"risk_level": list(RISK_COLORS)},
-            nbins=20,
-            title="样本风险分布",
-        )
-        st.plotly_chart(style_figure(figure), width="stretch")
+        with st.container(border=True):
+            figure = px.histogram(
+                result.samples,
+                x="risk_score",
+                color="risk_level",
+                color_discrete_map=RISK_COLORS,
+                category_orders={"risk_level": list(RISK_COLORS)},
+                nbins=20,
+                title="样本风险分布",
+            )
+            st.plotly_chart(style_figure(figure), width="stretch")
     with chart_right:
-        curve = result.risk_coverage
-        if "risk" in curve:
-            figure = px.line(curve, x="coverage", y="risk", title="Risk-Coverage 曲线")
-            figure.update_traces(line=dict(color="#2563eb", width=3))
-        else:
-            figure = px.line(curve, x="coverage", y="threshold", title="覆盖率-熵阈值")
-            figure.update_traces(line=dict(color="#0891b2", width=3))
-        st.plotly_chart(style_figure(figure), width="stretch")
+        with st.container(border=True):
+            curve = result.risk_coverage
+            if "risk" in curve:
+                figure = px.line(curve, x="coverage", y="risk", title="Risk-Coverage 曲线")
+                figure.update_traces(line=dict(color="#2563eb", width=3))
+            else:
+                figure = px.line(curve, x="coverage", y="threshold", title="覆盖率-熵阈值")
+                figure.update_traces(line=dict(color="#0891b2", width=3))
+            st.plotly_chart(style_figure(figure), width="stretch")
     section_label("样本级结果")
     ordered = result.samples.sort_values("risk_score", ascending=False)
-    st.dataframe(ordered, width="stretch", hide_index=True)
-    st.download_button(
-        "导出分类结果 CSV",
-        result.samples.to_csv(index=False).encode("utf-8-sig"),
-        "classification_uncertainty_results.csv",
-        "text/csv",
-    )
+    with st.container(border=True):
+        st.dataframe(ordered, width="stretch", hide_index=True)
+        st.download_button(
+            "导出分类结果 CSV",
+            result.samples.to_csv(index=False).encode("utf-8-sig"),
+            "classification_uncertainty_results.csv",
+            "text/csv",
+        )
 
 
 def field_page(user: User, store: AppStore) -> None:
-    page_header("EVIFIELD · 2D NIW", "二维矢量场证据协方差分析", "从二维 NIW 参数计算偶然、认知与总协方差，并诊断方向耦合、各向异性和证据风险。")
-    with st.container(border=True):
-        uploaded = st.file_uploader("上传像素级 NIW 参数 CSV", type=["csv"], key="field_file")
-        left, right = st.columns([1, 3])
-        use_sample = left.button("载入演示矢量场", width="stretch")
-        right.info("必要列：x、y、mean_1、mean_2、kappa、nu、l11、l21、l22；target_1/2 可选。")
-
+    page_header("EVIFIELD · 2D NIW", "二维矢量场证据协方差分析", "直接运行EviField光流模型或读取二维NIW参数，计算偶然、认知与总协方差和证据风险。", "⌁", "EviField推理与证据引擎就绪")
+    workflow_steps(
+        ["选择输入方式", "执行推理或导入", "分解协方差", "热力图与导出"],
+        active=4 if st.session_state.get("field_result") is not None else 1,
+    )
+    st.markdown(
+        '<div class="summary-band"><div><div class="summary-band__title">EviField 推理与证据诊断</div>'
+        '<div class="summary-band__copy">可从两张RGB图像直接预测光流及NIW参数，也可导入像素级证据结果。</div></div>'
+        '<div class="summary-band__badge">MODEL + 2D NIW</div></div>',
+        unsafe_allow_html=True,
+    )
+    input_mode = st.radio(
+        "输入方式",
+        ["EviField模型直接推理", "导入NIW结果"],
+        horizontal=True,
+        key="field_input_mode",
+    )
     data = None
-    if uploaded is not None:
-        data = pd.read_csv(uploaded)
-    elif use_sample:
-        st.session_state.field_input = sample_niw()
+    if input_mode == "EviField模型直接推理":
+        with st.container(border=True):
+            frame_columns = st.columns(2)
+            frame1 = frame_columns[0].file_uploader("参考帧 Frame 1", type=["png", "jpg", "jpeg", "tif", "tiff"], key="evifield_frame1")
+            frame2 = frame_columns[1].file_uploader("支持帧 Frame 2", type=["png", "jpg", "jpeg", "tif", "tiff"], key="evifield_frame2")
+            controls = st.columns([1.5, 1])
+            size_name = controls[0].selectbox("推理分辨率", ["96×64（快速）", "192×128", "384×256", "保持原始尺寸"])
+            device = controls[1].selectbox("计算设备", ["auto", "cpu"], format_func={"auto": "自动选择", "cpu": "CPU"}.get, key="evifield_device")
+            use_public_sample = st.button("使用内置双帧测试图像", width="stretch")
+            if use_public_sample:
+                st.session_state.evifield_public_sample = True
+            sources: tuple[object, object] | None = None
+            if frame1 is not None and frame2 is not None:
+                sources = (frame1, frame2)
+            elif st.session_state.get("evifield_public_sample"):
+                sample_root = ROOT / "system_handoff_evifield_era" / "test_sample"
+                sources = (sample_root / "frame1.png", sample_root / "frame2.png")
+                st.caption("当前输入：EviField模型包内置双帧测试图像")
+            run_model = st.button("运行EviField模型并分析", type="primary", width="stretch")
+        if run_model:
+            if sources is None:
+                st.error("请上传两张图像或选择内置测试图像")
+            else:
+                resize_options = {
+                    "96×64（快速）": (64, 96),
+                    "192×128": (128, 192),
+                    "384×256": (256, 384),
+                    "保持原始尺寸": None,
+                }
+                try:
+                    with st.spinner("正在加载EviField权重并计算像素级NIW证据……"):
+                        adapter = get_evifield_adapter(device)
+                        data = adapter.predict(sources, resize_to=resize_options[size_name])
+                        st.session_state.field_input = data
+                        st.session_state.field_result = analyze_niw_field(data)
+                except (ValueError, RuntimeError, ModelUnavailableError) as error:
+                    st.error(str(error))
+                else:
+                    store.log(
+                        user.id,
+                        "run_model_inference",
+                        "evifield",
+                        details={"pixels": len(data), "resolution": size_name, "device": adapter.device},
+                    )
+                    st.success(f"EviField推理完成，实际设备：{adapter.device}，已生成 {len(data):,} 个像素结果。")
+    else:
+        with st.container(border=True):
+            uploaded = st.file_uploader("上传像素级 NIW 参数 CSV", type=["csv"], key="field_file")
+            left, right = st.columns([1, 3])
+            use_sample = left.button("载入演示矢量场", width="stretch")
+            right.info("必要列：x、y、mean_1、mean_2、kappa、nu、l11、l21、l22；target_1/2 可选。")
+        if uploaded is not None:
+            data = pd.read_csv(uploaded)
+        elif use_sample:
+            st.session_state.field_input = sample_niw()
     data = data if data is not None else st.session_state.get("field_input")
     if data is None:
-        st.info("上传 NIW 参数或载入演示矢量场后开始分析。")
+        if input_mode == "EviField模型直接推理":
+            empty_state("等待双帧图像", "上传两张RGB图像或选择内置测试图像，然后运行EviField生成像素级NIW证据。", "⌁")
+        else:
+            empty_state("等待二维NIW参数", "上传像素级CSV或载入演示矢量场，系统将计算证据协方差与风险热力图。", "⌁")
         return
     with st.expander("输入参数预览"):
         st.dataframe(data.head(100), width="stretch")
-    if st.button("执行矢量场分析", type="primary", width="stretch"):
+    if input_mode == "导入NIW结果" and st.button("执行矢量场分析", type="primary", width="stretch"):
         try:
             st.session_state.field_result = analyze_niw_field(data)
         except ValueError as error:
@@ -452,25 +632,37 @@ def field_page(user: User, store: AppStore) -> None:
         }.get,
     )
     grid = pixels.pivot(index="y", columns="x", values=view_name).sort_index(ascending=False)
-    heatmap = go.Figure(data=go.Heatmap(z=grid.to_numpy(), x=grid.columns, y=grid.index, colorscale="Cividis"))
-    heatmap.update_layout(title=f"{view_name} 空间分布", xaxis_title="x", yaxis_title="y")
-    st.plotly_chart(style_figure(heatmap, 470), width="stretch")
+    with st.container(border=True):
+        heatmap = go.Figure(data=go.Heatmap(z=grid.to_numpy(), x=grid.columns, y=grid.index, colorscale="Cividis"))
+        heatmap.update_layout(title=f"{view_name} 空间分布", xaxis_title="x", yaxis_title="y")
+        st.plotly_chart(style_figure(heatmap, 470), width="stretch")
     if "risk" in result.risk_coverage:
-        figure = px.line(result.risk_coverage, x="coverage", y="risk", title="矢量场 Risk-Coverage 曲线")
-        figure.update_traces(line=dict(color="#0891b2", width=3))
-        st.plotly_chart(style_figure(figure), width="stretch")
+        with st.container(border=True):
+            figure = px.line(result.risk_coverage, x="coverage", y="risk", title="矢量场 Risk-Coverage 曲线")
+            figure.update_traces(line=dict(color="#0891b2", width=3))
+            st.plotly_chart(style_figure(figure), width="stretch")
     section_label("像素级诊断结果")
-    st.dataframe(pixels.sort_values("risk_score", ascending=False), width="stretch", hide_index=True)
-    st.download_button(
-        "导出矢量场结果 CSV",
-        pixels.to_csv(index=False).encode("utf-8-sig"),
-        "vector_field_uncertainty_results.csv",
-        "text/csv",
-    )
+    with st.container(border=True):
+        st.dataframe(pixels.sort_values("risk_score", ascending=False), width="stretch", hide_index=True)
+        st.download_button(
+            "导出矢量场结果 CSV",
+            pixels.to_csv(index=False).encode("utf-8-sig"),
+            "vector_field_uncertainty_results.csv",
+            "text/csv",
+        )
 
 
 def risk_page() -> None:
-    page_header("RISK TRIAGE", "高风险结果筛选", "统一查看分类样本与矢量场像素风险，按阈值生成优先复核清单。")
+    page_header("RISK TRIAGE", "高风险结果筛选", "统一查看分类样本与矢量场像素风险，按阈值生成优先复核清单。", "◇", "风险决策台在线")
+    st.markdown(
+        '<div class="legend-grid">'
+        '<div class="legend-card"><div class="legend-card__bar" style="background:#10b981"></div><div class="legend-card__name">低风险</div><div class="legend-card__range">0 ≤ score &lt; 30</div></div>'
+        '<div class="legend-card"><div class="legend-card__bar" style="background:#f59e0b"></div><div class="legend-card__name">中风险</div><div class="legend-card__range">30 ≤ score &lt; 60</div></div>'
+        '<div class="legend-card"><div class="legend-card__bar" style="background:#f97316"></div><div class="legend-card__name">高风险</div><div class="legend-card__range">60 ≤ score &lt; 80</div></div>'
+        '<div class="legend-card"><div class="legend-card__bar" style="background:#ef4444"></div><div class="legend-card__name">严重风险</div><div class="legend-card__range">80 ≤ score ≤ 100</div></div>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
     tables = []
     classification = st.session_state.get("classification_result")
     if classification is not None:
@@ -485,50 +677,83 @@ def risk_page() -> None:
         frame["predicted_class"] = "--"
         tables.append(frame[["task_type", "sample_id", "predicted_class", "risk_score", "risk_level", "risk_reason", "review_recommended"]])
     if not tables:
-        st.info("请先执行分类或矢量场分析。")
+        empty_state("暂无可筛选结果", "先完成分类或矢量场分析，风险决策台会自动汇总高风险对象。", "◇")
         return
     combined = pd.concat(tables, ignore_index=True)
-    left, right = st.columns([2, 1])
-    minimum = left.slider("最低风险分数", 0, 100, 60)
-    task_filter = right.selectbox("任务类型", ["全部", "分类", "矢量场"])
+    with st.container(border=True):
+        left, right = st.columns([2, 1])
+        minimum = left.slider("最低风险分数", 0, 100, 60)
+        task_filter = right.selectbox("任务类型", ["全部", "分类", "矢量场"])
     filtered = combined[combined["risk_score"] >= minimum]
     if task_filter != "全部":
         filtered = filtered[filtered["task_type"] == task_filter]
     filtered = filtered.sort_values("risk_score", ascending=False)
     metric_row([("待复核对象", len(filtered), None), ("严重风险", int((filtered["risk_level"] == "严重风险").sum()), None), ("当前阈值", minimum, None)])
-    st.dataframe(filtered, width="stretch", hide_index=True)
-    st.download_button("导出高风险清单", filtered.to_csv(index=False).encode("utf-8-sig"), "high_risk_review_list.csv", "text/csv")
+    section_label("优先复核清单")
+    with st.container(border=True):
+        st.dataframe(filtered, width="stretch", hide_index=True)
+        st.download_button("导出高风险清单", filtered.to_csv(index=False).encode("utf-8-sig"), "high_risk_review_list.csv", "text/csv")
 
 
 def model_page() -> None:
-    page_header("MODEL REGISTRY", "预训练模型管理", "检查论文模型参数状态并查看后续推理适配所需文件。")
-    rows = []
-    for name, relative, task, output in [
-        ("DFUN", "models/dfun/checkpoint.pt", "空间群分类 / MC Dropout", "T×K 类别概率"),
-        ("EviField", "models/evifield/checkpoint.pt", "二维矢量场 / NIW", "m, κ, ν, L"),
-    ]:
-        path = ROOT / relative
-        rows.append({"模型": name, "任务": task, "标准输出": output, "参数路径": relative, "状态": "已安装" if path.is_file() else "等待上传"})
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
-    left, right = st.columns(2)
-    left.info("DFUN 还需类别映射、输入长度、峰值特征与归一化配置。")
-    right.info("EviField 还需输入通道、图像尺寸、归一化与输出通道顺序。")
-    st.code("models/dfun/checkpoint.pt\nmodels/evifield/checkpoint.pt", language="text")
+    page_header("MODEL REGISTRY", "预训练模型管理", "检查论文模型代码、参数状态和直接推理能力。", "⬡", "两个论文模型已接入")
+    model_specs = model_registry()
+    columns = st.columns(2, gap="large")
+    installed_count = 0
+    for column, spec in zip(columns, model_specs):
+        name = spec["name"]
+        checkpoint = Path(spec["checkpoint"])
+        task = spec["task"]
+        output = spec["output"]
+        requirements = spec["requirements"]
+        installed = checkpoint.is_file()
+        installed_count += int(installed)
+        state = "已接入" if installed else "缺少参数"
+        progress = "100%" if installed else "18%"
+        relative = checkpoint.relative_to(ROOT) if checkpoint.is_relative_to(ROOT) else checkpoint
+        column.markdown(
+            f'<div class="model-card"><div class="model-card__head"><div class="model-card__logo">{name}</div>'
+            f'<div class="model-card__state">{state}</div></div>'
+            f'<div class="model-card__title">{name}</div><div class="model-card__task">{task}</div>'
+            f'<div class="model-card__path">{html.escape(str(relative))}</div>'
+            f'<div class="model-card__output">标准输出 · {html.escape(output)}</div>'
+            f'<div class="model-card__progress"><span style="width:{progress}"></span></div></div>',
+            unsafe_allow_html=True,
+        )
+        column.caption(f"接入所需：{requirements}")
+    section_label("接入状态")
+    metric_row(
+        [
+            ("模型总数", len(model_specs), None),
+            ("已安装参数", installed_count, None),
+            ("待接入模型", len(model_specs) - installed_count, None),
+            ("推理适配器", 2, "稳定接口已预留"),
+        ]
+    )
+    with st.expander("查看参数目录约定"):
+        st.code("\n".join(str(spec["checkpoint"].relative_to(ROOT)) for spec in model_specs), language="text")
+        st.caption("模型依赖安装命令：pip install -e '.[models]'")
 
 
 def account_page(user: User, store: AppStore) -> None:
-    page_header("ACCOUNT SECURITY", "账户设置", "查看账户信息并更新登录密码。")
+    page_header("ACCOUNT SECURITY", "账户设置", "查看账户信息并更新登录密码。", "◉", "账户安全正常")
     left, right = st.columns([1, 1.4], gap="large")
     with left:
-        with st.container(border=True):
-            st.subheader(user.display_name)
-            st.write(f"用户名：`{user.username}`")
-            st.write(f"角色：{'系统管理员' if user.role == 'admin' else '分析用户'}")
-            st.write(f"状态：{'正常' if user.status == 'active' else '已停用'}")
-            st.caption(f"创建时间：{user.created_at}")
+        role_name = "系统管理员" if user.role == "admin" else "分析用户"
+        initials = (user.display_name or user.username)[:2].upper()
+        left.markdown(
+            f'<div class="profile-card"><div class="profile-card__avatar">{html.escape(initials)}</div>'
+            f'<div class="profile-card__name">{html.escape(user.display_name)}</div>'
+            f'<div class="profile-card__user">@{html.escape(user.username)}</div>'
+            f'<div class="profile-card__row"><span>账户角色</span><b>{role_name}</b></div>'
+            f'<div class="profile-card__row"><span>账户状态</span><b>● 正常</b></div>'
+            f'<div class="profile-card__row"><span>创建时间</span><b>{html.escape(user.created_at[:10])}</b></div></div>',
+            unsafe_allow_html=True,
+        )
     with right:
         with st.form("change_password_form", clear_on_submit=True):
-            st.subheader("修改密码")
+            st.markdown("### 更新登录密码")
+            st.caption("建议定期更换密码，密码至少 8 位并包含字母和数字。")
             current = st.text_input("当前密码", type="password")
             new = st.text_input("新密码", type="password", help="至少 8 位，包含字母和数字")
             confirm = st.text_input("确认新密码", type="password")
@@ -546,7 +771,7 @@ def account_page(user: User, store: AppStore) -> None:
 
 
 def user_admin_page(user: User, store: AppStore) -> None:
-    page_header("ADMINISTRATION", "用户管理", "查看注册账户并启用或停用分析用户。管理员不能停用自身账户。")
+    page_header("ADMINISTRATION", "用户管理", "查看注册账户并启用或停用分析用户。管理员不能停用自身账户。", "♙", "管理员权限已验证")
     users = store.list_users()
     frame = pd.DataFrame(
         [
@@ -562,14 +787,33 @@ def user_admin_page(user: User, store: AppStore) -> None:
         ]
     )
     metric_row([("账户总数", len(users), None), ("有效账户", sum(item.status == "active" for item in users), None), ("管理员", sum(item.role == "admin" for item in users), None)])
-    st.dataframe(frame, width="stretch", hide_index=True)
+    section_label("账户概览")
+    for row_start in range(0, len(users), 3):
+        columns = st.columns(3, gap="medium")
+        for column, item in zip(columns, users[row_start : row_start + 3]):
+            role_name = "系统管理员" if item.role == "admin" else "分析用户"
+            status_name = "正常" if item.status == "active" else "已停用"
+            status_style = "color:#047857;background:#d1fae5" if item.status == "active" else "color:#b91c1c;background:#fee2e2"
+            column.markdown(
+                f'<div class="project-card"><div class="project-card__top">'
+                f'<div class="project-card__code">@{html.escape(item.username)}</div>'
+                f'<div class="project-card__status" style="{status_style}">{status_name}</div></div>'
+                f'<div class="project-card__title">{html.escape(item.display_name)}</div>'
+                f'<div class="project-card__copy">{role_name}</div>'
+                f'<div class="project-card__meta">注册于 {html.escape(item.created_at[:10])}</div></div>',
+                unsafe_allow_html=True,
+            )
+    with st.expander("查看完整用户数据表"):
+        st.dataframe(frame, width="stretch", hide_index=True)
     candidates = [item for item in users if item.id != user.id]
     if candidates:
-        with st.form("user_status_form"):
-            mapping = {item.id: f"{item.username} · {item.display_name}" for item in candidates}
-            target_id = st.selectbox("选择账户", list(mapping), format_func=mapping.get)
-            status_label = st.selectbox("设置状态", ["正常", "停用"])
-            submitted = st.form_submit_button("保存状态")
+        section_label("账户状态控制")
+        with st.container(border=True):
+            with st.form("user_status_form"):
+                mapping = {item.id: f"{item.username} · {item.display_name}" for item in candidates}
+                target_id = st.selectbox("选择账户", list(mapping), format_func=mapping.get)
+                status_label = st.selectbox("设置状态", ["正常", "停用"])
+                submitted = st.form_submit_button("保存状态", type="primary")
         if submitted:
             try:
                 store.set_user_status(user, int(target_id), "active" if status_label == "正常" else "disabled")
@@ -581,12 +825,30 @@ def user_admin_page(user: User, store: AppStore) -> None:
 
 
 def log_page(store: AppStore) -> None:
-    page_header("AUDIT TRAIL", "操作日志", "审计账户注册、登录、项目变更、分析执行和安全操作。")
+    page_header("AUDIT TRAIL", "操作日志", "审计账户注册、登录、项目变更、分析执行和安全操作。", "≡", "审计记录持续写入")
     logs = store.list_logs(200)
     frame = pd.DataFrame(logs)
     if frame.empty:
-        st.info("暂无操作日志。")
+        empty_state("暂无操作日志", "账户、项目和分析操作将在这里形成可追溯记录。", "≡")
         return
+    metric_row(
+        [
+            ("日志总数", len(frame), None),
+            ("登录事件", int(frame["action"].isin(["login", "login_failed", "logout"]).sum()), None),
+            ("项目事件", int((frame["target_type"] == "project").sum()), None),
+            ("分析事件", int((frame["action"] == "run_analysis").sum()), None),
+        ]
+    )
+    with st.container(border=True):
+        left, right = st.columns(2)
+        action_options = ["全部"] + sorted(frame["action"].unique().tolist())
+        user_options = ["全部"] + sorted(frame["username"].unique().tolist())
+        action_filter = left.selectbox("操作类型", action_options)
+        user_filter = right.selectbox("操作用户", user_options)
+    if action_filter != "全部":
+        frame = frame[frame["action"] == action_filter]
+    if user_filter != "全部":
+        frame = frame[frame["username"] == user_filter]
     frame = frame.rename(
         columns={
             "username": "操作用户",
@@ -597,7 +859,9 @@ def log_page(store: AppStore) -> None:
             "created_at": "操作时间",
         }
     )
-    st.dataframe(frame[["操作时间", "操作用户", "操作", "对象类型", "对象ID", "详情"]], width="stretch", hide_index=True)
+    section_label("审计事件流")
+    with st.container(border=True):
+        st.dataframe(frame[["操作时间", "操作用户", "操作", "对象类型", "对象ID", "详情"]], width="stretch", hide_index=True)
 
 
 def main() -> None:

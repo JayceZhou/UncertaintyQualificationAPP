@@ -1,0 +1,30 @@
+{
+  "model_name": "DFUN / gated PhyNetCNN",
+  "checkpoint": "checkpoints/dfun_gate_fls_exp_test4_model.pth",
+  "source_checkpoint": "training_results/exp_results/exp_test4_model.pth",
+  "configuration": "CNN + Augmentation + Peaks (Gate) + FLS",
+  "num_classes": 230,
+  "label_mapping": "label_index 0..229 maps to space_group 1..230 by space_group = label_index + 1",
+  "raw_xrd_input_shape": "[batch_size, 5000] recommended",
+  "physical_feature_shape": "[batch_size, 45]",
+  "model_output_shape": "[batch_size, 230]",
+  "internal_xrd_interpolation_length": 8500,
+  "training_d_spacing_grid": "np.flip(np.linspace(0.889, 17.659, 5000))",
+  "intensity_normalization": "clip negative values to 0, then max-normalize to 0-100",
+  "gate_definition": "gated_xrd_features = g * xrd_features; gated_phys_features = (1 - g) * phys_features; larger g means stronger CNN/raw-XRD reliance",
+  "dropout_layers": [
+    {"name": "cnn_branch.3", "p": 0.4},
+    {"name": "cnn_branch.7", "p": 0.4},
+    {"name": "cnn_branch.11", "p": 0.4},
+    {"name": "mlp_branch.2", "p": 0.3},
+    {"name": "classifier_head.2", "p": 0.5},
+    {"name": "classifier_head.5", "p": 0.5}
+  ],
+  "mc_dropout": "Call model.eval(), then set only Dropout modules to train mode; keep BatchNorm in eval mode; average probabilities over stochastic passes.",
+  "clean_revision_metrics": {
+    "accuracy": 0.7265,
+    "weighted_f1": 0.7179,
+    "macro_f1": 0.5113,
+    "top3_accuracy": 0.7633
+  }
+}

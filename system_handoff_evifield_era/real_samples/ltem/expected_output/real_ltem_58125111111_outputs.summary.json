@@ -1,0 +1,68 @@
+{
+  "checkpoint": "checkpoints/evifield_era_ltem_latest_FT.pt",
+  "stage_name": "FT",
+  "task_type": "ltem",
+  "iters_per_scale": 4,
+  "input_meta": {
+    "input_order": [
+      "U",
+      "I",
+      "O"
+    ],
+    "original_size": [
+      256,
+      256
+    ],
+    "input_size": [
+      224,
+      224
+    ],
+    "resize_to": [
+      256,
+      256
+    ],
+    "center_crop": {
+      "top": 16,
+      "left": 16,
+      "height": 224,
+      "width": 224
+    },
+    "normalization": "0..255 or 0..1 -> 0..1"
+  },
+  "output_npz": "real_samples/ltem/expected_output/real_ltem_58125111111_outputs.npz",
+  "pred_field_shape": [
+    1,
+    2,
+    224,
+    224
+  ],
+  "raw_niw_shape": [
+    1,
+    6,
+    224,
+    224
+  ],
+  "C_total_shape": [
+    1,
+    224,
+    224,
+    2,
+    2
+  ],
+  "risk_score_shape": [
+    1,
+    1,
+    224,
+    224
+  ],
+  "pred_field_mean": -0.4194958209991455,
+  "pred_field_std": 4.432883262634277,
+  "kappa_mean": 7.117176055908203,
+  "nu_mean": 7.117176055908203,
+  "U_total_mean": 0.7645931243896484,
+  "risk_score_mean": 0.7812843918800354,
+  "sample_epe": 0.504057765007019,
+  "sample_mae": 0.3226417005062103,
+  "valid_pixels": 21285,
+  "output_sha256": "459c9df094c97bf2cb4d6f27d3e6329552362c507b28872d0ca7f444ebfec7eb"
+}

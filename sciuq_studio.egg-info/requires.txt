@@ -1,7 +1,12 @@
 numpy>=1.24
 pandas>=2.0
 plotly>=5.18
-streamlit>=1.32
+streamlit<2,>=1.48
 
 [dev]
 pytest>=8.0
+
+[models]
+torch>=2.1
+scipy>=1.10
+Pillow>=10

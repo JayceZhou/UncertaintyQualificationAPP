@@ -1,27 +1,27 @@
 # 预训练模型占位目录
 
-当前 V1.0 可直接分析已有推理结果。模型推理模式将在参数文件上传后通过
-`inference/adapters.py` 接入，分析内核和界面无需改动。
+当前 V1.0 同时支持模型直接推理和已有结果分析。DFUN 与 EviField 的
+研究代码及参数由 `inference/adapters.py` 延迟加载，未安装 PyTorch 时基础
+结果分析功能仍可使用。
 
-约定目录：
+实际接入目录：
 
 ```text
-models/
-├── dfun/
-│   ├── checkpoint.pt      # 待上传
-│   └── model_config.json  # 类别表、输入长度、归一化参数等
-└── evifield/
-    ├── checkpoint.pt      # 待上传
-    └── model_config.json  # 输入通道、输出参数映射、图像尺寸等
+dfun_model_package/
+├── checkpoints/dfun_gate_fls_exp_test4_model.pth
+├── dfun/                  # 网络、预处理和推理参考代码
+└── mappings/              # 230类空间群映射
+
+system_handoff_evifield_era/
+├── checkpoints/evifield_era_optical_flow_latest_S_Mix.pt
+├── code/                  # 网络、NIW变换和预处理
+└── test_sample/           # 双帧测试图像
 ```
 
-接入时还需要以下信息：
+安装模型推理依赖：
 
-- 完整网络结构代码或可导入模块；
-- 训练时使用的 PyTorch 版本；
-- 输入预处理和归一化参数；
-- DFUN 的类别编号映射与 Dropout 层配置；
-- EviField 输出张量中 `mean_1, mean_2, kappa, nu, l11, l21, l22` 的通道顺序。
+```bash
+pip install -e '.[models]'
+```
 
 不要把参数文件提交到公开代码仓库。
-

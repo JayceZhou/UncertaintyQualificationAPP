@@ -1,0 +1,1152 @@
+[
+  {
+    "label_index": 0,
+    "space_group": 1,
+    "crystal_system": "triclinic"
+  },
+  {
+    "label_index": 1,
+    "space_group": 2,
+    "crystal_system": "triclinic"
+  },
+  {
+    "label_index": 2,
+    "space_group": 3,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 3,
+    "space_group": 4,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 4,
+    "space_group": 5,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 5,
+    "space_group": 6,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 6,
+    "space_group": 7,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 7,
+    "space_group": 8,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 8,
+    "space_group": 9,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 9,
+    "space_group": 10,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 10,
+    "space_group": 11,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 11,
+    "space_group": 12,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 12,
+    "space_group": 13,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 13,
+    "space_group": 14,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 14,
+    "space_group": 15,
+    "crystal_system": "monoclinic"
+  },
+  {
+    "label_index": 15,
+    "space_group": 16,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 16,
+    "space_group": 17,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 17,
+    "space_group": 18,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 18,
+    "space_group": 19,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 19,
+    "space_group": 20,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 20,
+    "space_group": 21,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 21,
+    "space_group": 22,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 22,
+    "space_group": 23,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 23,
+    "space_group": 24,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 24,
+    "space_group": 25,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 25,
+    "space_group": 26,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 26,
+    "space_group": 27,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 27,
+    "space_group": 28,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 28,
+    "space_group": 29,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 29,
+    "space_group": 30,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 30,
+    "space_group": 31,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 31,
+    "space_group": 32,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 32,
+    "space_group": 33,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 33,
+    "space_group": 34,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 34,
+    "space_group": 35,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 35,
+    "space_group": 36,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 36,
+    "space_group": 37,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 37,
+    "space_group": 38,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 38,
+    "space_group": 39,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 39,
+    "space_group": 40,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 40,
+    "space_group": 41,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 41,
+    "space_group": 42,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 42,
+    "space_group": 43,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 43,
+    "space_group": 44,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 44,
+    "space_group": 45,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 45,
+    "space_group": 46,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 46,
+    "space_group": 47,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 47,
+    "space_group": 48,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 48,
+    "space_group": 49,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 49,
+    "space_group": 50,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 50,
+    "space_group": 51,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 51,
+    "space_group": 52,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 52,
+    "space_group": 53,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 53,
+    "space_group": 54,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 54,
+    "space_group": 55,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 55,
+    "space_group": 56,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 56,
+    "space_group": 57,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 57,
+    "space_group": 58,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 58,
+    "space_group": 59,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 59,
+    "space_group": 60,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 60,
+    "space_group": 61,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 61,
+    "space_group": 62,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 62,
+    "space_group": 63,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 63,
+    "space_group": 64,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 64,
+    "space_group": 65,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 65,
+    "space_group": 66,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 66,
+    "space_group": 67,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 67,
+    "space_group": 68,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 68,
+    "space_group": 69,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 69,
+    "space_group": 70,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 70,
+    "space_group": 71,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 71,
+    "space_group": 72,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 72,
+    "space_group": 73,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 73,
+    "space_group": 74,
+    "crystal_system": "orthorhombic"
+  },
+  {
+    "label_index": 74,
+    "space_group": 75,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 75,
+    "space_group": 76,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 76,
+    "space_group": 77,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 77,
+    "space_group": 78,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 78,
+    "space_group": 79,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 79,
+    "space_group": 80,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 80,
+    "space_group": 81,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 81,
+    "space_group": 82,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 82,
+    "space_group": 83,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 83,
+    "space_group": 84,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 84,
+    "space_group": 85,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 85,
+    "space_group": 86,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 86,
+    "space_group": 87,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 87,
+    "space_group": 88,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 88,
+    "space_group": 89,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 89,
+    "space_group": 90,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 90,
+    "space_group": 91,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 91,
+    "space_group": 92,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 92,
+    "space_group": 93,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 93,
+    "space_group": 94,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 94,
+    "space_group": 95,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 95,
+    "space_group": 96,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 96,
+    "space_group": 97,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 97,
+    "space_group": 98,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 98,
+    "space_group": 99,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 99,
+    "space_group": 100,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 100,
+    "space_group": 101,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 101,
+    "space_group": 102,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 102,
+    "space_group": 103,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 103,
+    "space_group": 104,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 104,
+    "space_group": 105,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 105,
+    "space_group": 106,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 106,
+    "space_group": 107,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 107,
+    "space_group": 108,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 108,
+    "space_group": 109,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 109,
+    "space_group": 110,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 110,
+    "space_group": 111,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 111,
+    "space_group": 112,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 112,
+    "space_group": 113,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 113,
+    "space_group": 114,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 114,
+    "space_group": 115,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 115,
+    "space_group": 116,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 116,
+    "space_group": 117,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 117,
+    "space_group": 118,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 118,
+    "space_group": 119,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 119,
+    "space_group": 120,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 120,
+    "space_group": 121,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 121,
+    "space_group": 122,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 122,
+    "space_group": 123,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 123,
+    "space_group": 124,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 124,
+    "space_group": 125,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 125,
+    "space_group": 126,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 126,
+    "space_group": 127,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 127,
+    "space_group": 128,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 128,
+    "space_group": 129,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 129,
+    "space_group": 130,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 130,
+    "space_group": 131,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 131,
+    "space_group": 132,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 132,
+    "space_group": 133,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 133,
+    "space_group": 134,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 134,
+    "space_group": 135,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 135,
+    "space_group": 136,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 136,
+    "space_group": 137,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 137,
+    "space_group": 138,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 138,
+    "space_group": 139,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 139,
+    "space_group": 140,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 140,
+    "space_group": 141,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 141,
+    "space_group": 142,
+    "crystal_system": "tetragonal"
+  },
+  {
+    "label_index": 142,
+    "space_group": 143,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 143,
+    "space_group": 144,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 144,
+    "space_group": 145,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 145,
+    "space_group": 146,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 146,
+    "space_group": 147,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 147,
+    "space_group": 148,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 148,
+    "space_group": 149,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 149,
+    "space_group": 150,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 150,
+    "space_group": 151,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 151,
+    "space_group": 152,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 152,
+    "space_group": 153,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 153,
+    "space_group": 154,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 154,
+    "space_group": 155,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 155,
+    "space_group": 156,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 156,
+    "space_group": 157,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 157,
+    "space_group": 158,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 158,
+    "space_group": 159,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 159,
+    "space_group": 160,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 160,
+    "space_group": 161,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 161,
+    "space_group": 162,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 162,
+    "space_group": 163,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 163,
+    "space_group": 164,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 164,
+    "space_group": 165,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 165,
+    "space_group": 166,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 166,
+    "space_group": 167,
+    "crystal_system": "trigonal"
+  },
+  {
+    "label_index": 167,
+    "space_group": 168,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 168,
+    "space_group": 169,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 169,
+    "space_group": 170,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 170,
+    "space_group": 171,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 171,
+    "space_group": 172,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 172,
+    "space_group": 173,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 173,
+    "space_group": 174,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 174,
+    "space_group": 175,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 175,
+    "space_group": 176,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 176,
+    "space_group": 177,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 177,
+    "space_group": 178,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 178,
+    "space_group": 179,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 179,
+    "space_group": 180,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 180,
+    "space_group": 181,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 181,
+    "space_group": 182,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 182,
+    "space_group": 183,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 183,
+    "space_group": 184,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 184,
+    "space_group": 185,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 185,
+    "space_group": 186,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 186,
+    "space_group": 187,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 187,
+    "space_group": 188,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 188,
+    "space_group": 189,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 189,
+    "space_group": 190,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 190,
+    "space_group": 191,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 191,
+    "space_group": 192,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 192,
+    "space_group": 193,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 193,
+    "space_group": 194,
+    "crystal_system": "hexagonal"
+  },
+  {
+    "label_index": 194,
+    "space_group": 195,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 195,
+    "space_group": 196,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 196,
+    "space_group": 197,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 197,
+    "space_group": 198,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 198,
+    "space_group": 199,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 199,
+    "space_group": 200,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 200,
+    "space_group": 201,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 201,
+    "space_group": 202,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 202,
+    "space_group": 203,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 203,
+    "space_group": 204,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 204,
+    "space_group": 205,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 205,
+    "space_group": 206,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 206,
+    "space_group": 207,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 207,
+    "space_group": 208,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 208,
+    "space_group": 209,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 209,
+    "space_group": 210,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 210,
+    "space_group": 211,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 211,
+    "space_group": 212,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 212,
+    "space_group": 213,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 213,
+    "space_group": 214,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 214,
+    "space_group": 215,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 215,
+    "space_group": 216,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 216,
+    "space_group": 217,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 217,
+    "space_group": 218,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 218,
+    "space_group": 219,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 219,
+    "space_group": 220,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 220,
+    "space_group": 221,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 221,
+    "space_group": 222,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 222,
+    "space_group": 223,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 223,
+    "space_group": 224,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 224,
+    "space_group": 225,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 225,
+    "space_group": 226,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 226,
+    "space_group": 227,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 227,
+    "space_group": 228,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 228,
+    "space_group": 229,
+    "crystal_system": "cubic"
+  },
+  {
+    "label_index": 229,
+    "space_group": 230,
+    "crystal_system": "cubic"
+  }
+]

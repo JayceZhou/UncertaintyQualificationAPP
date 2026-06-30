@@ -1,0 +1,49 @@
+{
+  "checkpoint": "checkpoints/evifield_era_optical_flow_latest_S_Mix.pt",
+  "stage_name": "S+Mix",
+  "iters_per_scale": 4,
+  "input_meta": {
+    "original_size": [
+      64,
+      96
+    ],
+    "input_size": [
+      64,
+      96
+    ],
+    "image_scale_x": 1.0,
+    "image_scale_y": 1.0
+  },
+  "output_npz": "expected_output/reproduced_outputs.npz",
+  "pred_field_shape": [
+    1,
+    2,
+    64,
+    96
+  ],
+  "raw_niw_shape": [
+    1,
+    6,
+    64,
+    96
+  ],
+  "C_total_shape": [
+    1,
+    64,
+    96,
+    2,
+    2
+  ],
+  "risk_score_shape": [
+    1,
+    1,
+    64,
+    96
+  ],
+  "pred_field_mean": 1.3582022190093994,
+  "pred_field_std": 0.8379982113838196,
+  "kappa_mean": 3.6256673336029053,
+  "nu_mean": 3.6256673336029053,
+  "U_total_mean": 1390.077880859375,
+  "risk_score_mean": -2.0010972023010254
+}

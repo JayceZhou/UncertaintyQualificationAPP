@@ -1,0 +1,133 @@
+[
+  {
+    "checkpoint": "checkpoints/evifield_era_optical_flow_latest_S_Mix.pt",
+    "stage_name": "S+Mix",
+    "iters_per_scale": 4,
+    "input_meta": {
+      "original_size": [
+        436,
+        1024
+      ],
+      "input_size": [
+        416,
+        960
+      ],
+      "image_scale_x": 0.9375,
+      "image_scale_y": 0.9541284403669725,
+      "resize_to": [
+        448,
+        1024
+      ],
+      "center_crop": {
+        "top": 16,
+        "left": 32,
+        "height": 416,
+        "width": 960
+      }
+    },
+    "output_npz": "real_samples/optical_flow/expected_output/real_sintel_shaman3_outputs.npz",
+    "pred_field_shape": [
+      1,
+      2,
+      416,
+      960
+    ],
+    "raw_niw_shape": [
+      1,
+      6,
+      416,
+      960
+    ],
+    "C_total_shape": [
+      1,
+      416,
+      960,
+      2,
+      2
+    ],
+    "risk_score_shape": [
+      1,
+      1,
+      416,
+      960
+    ],
+    "pred_field_mean": -0.07202475517988205,
+    "pred_field_std": 1.6941392421722412,
+    "kappa_mean": 3.765139579772949,
+    "nu_mean": 3.765139579772949,
+    "U_total_mean": 635.4305419921875,
+    "risk_score_mean": -2.123068332672119,
+    "sample_epe": 0.47585731744766235,
+    "sample_mae": 0.2968619465827942,
+    "valid_pixels": 399360,
+    "output_sha256": "a25ff9f1c968dd3fc6b9db800605cb17bb3f6cd4026c54822c39cbfc25111c85"
+  },
+  {
+    "checkpoint": "checkpoints/evifield_era_ltem_latest_FT.pt",
+    "stage_name": "FT",
+    "task_type": "ltem",
+    "iters_per_scale": 4,
+    "input_meta": {
+      "input_order": [
+        "U",
+        "I",
+        "O"
+      ],
+      "original_size": [
+        256,
+        256
+      ],
+      "input_size": [
+        224,
+        224
+      ],
+      "resize_to": [
+        256,
+        256
+      ],
+      "center_crop": {
+        "top": 16,
+        "left": 16,
+        "height": 224,
+        "width": 224
+      },
+      "normalization": "0..255 or 0..1 -> 0..1"
+    },
+    "output_npz": "real_samples/ltem/expected_output/real_ltem_58125111111_outputs.npz",
+    "pred_field_shape": [
+      1,
+      2,
+      224,
+      224
+    ],
+    "raw_niw_shape": [
+      1,
+      6,
+      224,
+      224
+    ],
+    "C_total_shape": [
+      1,
+      224,
+      224,
+      2,
+      2
+    ],
+    "risk_score_shape": [
+      1,
+      1,
+      224,
+      224
+    ],
+    "pred_field_mean": -0.4194958209991455,
+    "pred_field_std": 4.432883262634277,
+    "kappa_mean": 7.117176055908203,
+    "nu_mean": 7.117176055908203,
+    "U_total_mean": 0.7645931243896484,
+    "risk_score_mean": 0.7812843918800354,
+    "sample_epe": 0.504057765007019,
+    "sample_mae": 0.3226417005062103,
+    "valid_pixels": 21285,
+    "output_sha256": "459c9df094c97bf2cb4d6f27d3e6329552362c507b28872d0ca7f444ebfec7eb"
+  }
+]

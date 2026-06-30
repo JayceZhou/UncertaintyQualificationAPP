@@ -1,0 +1,95 @@
+{
+  "sample_id": "58125111111",
+  "dataset": "LTEMData",
+  "label_encoding": "ltem_domain_color_hue_unit_vector",
+  "input_order": [
+    "U",
+    "I",
+    "O"
+  ],
+  "inner_potential": 0.0,
+  "inner_potential_index": 0,
+  "base_id": "581251111",
+  "group_id": "5812511111",
+  "canonical_sample_id": "58125111111",
+  "canonical_images": [
+    "/data/zhousc/LTEM_data/LTEM_data/U/58125111111.png",
+    "/data/zhousc/LTEM_data/LTEM_data/I/58125111111.png",
+    "/data/zhousc/LTEM_data/LTEM_data/O/58125111111.png"
+  ],
+  "dmi_type": "Bulk",
+  "scene": "581251111",
+  "dataset_name": "LTEMData",
+  "split": "val",
+  "vector_semantics": "axis_aligned_physical",
+  "vector_semantics_family": "physical",
+  "resize_info": {
+    "input_size": [
+      256,
+      256
+    ],
+    "output_size": [
+      256,
+      256
+    ],
+    "image_scale_factor": {
+      "x": 1.0,
+      "y": 1.0
+    },
+    "flow_scale_factor": {
+      "x": 1.0,
+      "y": 1.0
+    },
+    "vector_semantics": "axis_aligned_physical",
+    "vector_semantics_family": "physical",
+    "applied": true,
+    "final_size": [
+      224,
+      224
+    ]
+  },
+  "augmentation_info": {
+    "requested_resize_to": [
+      256,
+      256
+    ],
+    "requested_crop_size": [
+      224,
+      224
+    ],
+    "random_crop_enabled": false,
+    "crop": {
+      "applied": true,
+      "top": 16,
+      "left": 16,
+      "height": 224,
+      "width": 224,
+      "input_size_before_crop": [
+        256,
+        256
+      ],
+      "output_size": [
+        224,
+        224
+      ]
+    },
+    "horizontal_flip_applied": false,
+    "horizontal_flip_prob": 0.0,
+    "vertical_flip_applied": false,
+    "vertical_flip_prob": 0.0,
+    "normalize_images": true,
+    "input_size": [
+      256,
+      256
+    ],
+    "final_size": [
+      224,
+      224
+    ]
+  },
+  "flow_scale_factor": {
+    "x": 1.0,
+    "y": 1.0
+  },
+  "has_invalid_target_values": true
+}

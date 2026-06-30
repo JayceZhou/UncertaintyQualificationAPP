@@ -1,0 +1,79 @@
+{
+  "sample_id": "clean:shaman_3:000000",
+  "dataset": "Sintel",
+  "render_pass": "clean",
+  "scene": "shaman_3",
+  "subset": "training",
+  "dataset_name": "Sintel",
+  "split": "val",
+  "vector_semantics": "image_coordinates",
+  "vector_semantics_family": "optical_flow",
+  "resize_info": {
+    "input_size": [
+      436,
+      1024
+    ],
+    "output_size": [
+      448,
+      1024
+    ],
+    "image_scale_factor": {
+      "x": 1.0,
+      "y": 1.0275229357798166
+    },
+    "flow_scale_factor": {
+      "x": 1.0,
+      "y": 1.0275229357798166
+    },
+    "vector_semantics": "image_coordinates",
+    "vector_semantics_family": "optical_flow",
+    "applied": true,
+    "final_size": [
+      416,
+      960
+    ]
+  },
+  "augmentation_info": {
+    "requested_resize_to": [
+      448,
+      1024
+    ],
+    "requested_crop_size": [
+      416,
+      960
+    ],
+    "random_crop_enabled": false,
+    "crop": {
+      "applied": true,
+      "top": 16,
+      "left": 32,
+      "height": 416,
+      "width": 960,
+      "input_size_before_crop": [
+        448,
+        1024
+      ],
+      "output_size": [
+        416,
+        960
+      ]
+    },
+    "horizontal_flip_applied": false,
+    "horizontal_flip_prob": 0.0,
+    "vertical_flip_applied": false,
+    "vertical_flip_prob": 0.0,
+    "normalize_images": true,
+    "input_size": [
+      436,
+      1024
+    ],
+    "final_size": [
+      416,
+      960
+    ]
+  },
+  "flow_scale_factor": {
+    "x": 1.0,
+    "y": 1.0275229357798166
+  }
+}

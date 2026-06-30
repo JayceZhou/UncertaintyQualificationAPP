@@ -1,2 +1,3 @@
+appcore
 inference
 uqcore
